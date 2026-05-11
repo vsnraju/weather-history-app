@@ -5,8 +5,6 @@ Production-oriented Clean Architecture sample using ASP.NET Core on .NET 10 and 
 The app reads dates from `dates.txt`, safely parses multiple date formats, fetches Dallas historical weather from Open-Meteo for valid dates, stores each response as local JSON, avoids duplicate API calls when files already exist, and exposes the aggregate data through `GET /api/weather`.
 
 ## Project Structure
-
-```text
 .
 |-- WeatherAPI.slnx
 |-- src
@@ -38,9 +36,11 @@ The app reads dates from `dates.txt`, safely parses multiple date formats, fetch
 |   `-- weather-ui
 |       |-- proxy.conf.json
 |       `-- src/app/weather
+|-- skills
+|   |-- iterations
+|   |-- prompts
 |-- AI_NOTES.md
 `-- README.md
-```
 
 ## Architecture
 
@@ -91,9 +91,8 @@ Invalid dates, such as `April 31, 2022`, return an entry with `status: "InvalidD
 
 Valid weather results are written under:
 
-```text
 src/Weather.Api/weather-data/yyyy-MM-dd.json
-```
+
 
 The repository checks for an existing file before the application calls Open-Meteo again.
 
