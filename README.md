@@ -47,7 +47,7 @@ The app reads dates from `dates.txt`, safely parses multiple date formats, fetch
 This solution follows Clean Architecture dependency rules:
 
 - `Weather.Domain` contains the core model and `Result` primitives. It has no dependency on infrastructure, ASP.NET Core, or Angular.
-- `Weather.Application` owns use-case orchestration, DTOs, date parsing strategies, and interfaces for input, persistence, and external weather data.
+- `Weather.Application` owns use-case orchestration, DTOs, date parsing, and interfaces for input, persistence, and external weather data.
 - `Weather.Infrastructure` implements file reading, JSON file persistence, and the typed Open-Meteo `HttpClient` with Polly retries.
 - `Weather.Api` wires dependency injection, Serilog, CORS, OpenAPI, and the thin `WeatherController`.
 - `frontend/weather-ui` is a separate Angular 21 standalone app that calls the API through a typed Angular service.
@@ -58,8 +58,8 @@ Business validation uses `Result<T>` instead of throwing exceptions. Infrastruct
 
 - Domain model: `WeatherDataPoint` validates required min/max/precipitation values and impossible temperature ranges.
 - Result pattern: `Result` and `Result<T>` carry validation and operational failures without using exceptions for expected business outcomes.
-- Date parsing interfaces: `IDateParser` and `IDateParsingStrategy`.
-- Date strategies: `SlashDateParsingStrategy`, `LongMonthDateParsingStrategy`, and `AbbreviatedMonthDateParsingStrategy`.
+- Date parsing interface: `IDateParser`.
+- Date parser: `DateParser` validates the supported formats with `DateTime.TryParseExact`.
 - Repository interface: `IWeatherRepository`.
 - External API interface: `IWeatherApiClient`.
 - Input interface: `IDateFileReader`.
@@ -171,7 +171,7 @@ The UI uses Angular standalone components and Angular Material:
 
 1. Scaffold Clean Architecture solution and project references.
 2. Add domain result model and weather data validation.
-3. Implement application date parsing strategies and weather use case.
+3. Implement application date parsing and weather use case.
 4. Add infrastructure file storage, date input, Open-Meteo client, Polly, and Serilog wiring.
 5. Add API controller, configuration, and sample `dates.txt`.
 6. Add backend unit tests.

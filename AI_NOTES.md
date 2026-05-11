@@ -8,7 +8,7 @@
 ## Helpful Prompts
 
 1. "Act as a senior .NET 10 and Angular 21 architect. Design and implement a production-quality coding exercise using Clean Architecture."
-2. "Use repository pattern, strategy pattern for date parsing, Result pattern, typed HttpClient, Polly, Serilog, xUnit, Moq, FluentAssertions, and Angular Material."
+2. "Use repository pattern, exact date parsing, Result pattern, typed HttpClient, Polly, Serilog, xUnit, Moq, FluentAssertions, and Angular Material."
 3. "Generate README, AI_NOTES, suggested commit breakdown, and production improvement ideas."
 
 ## AI Suggestion That Needed Correction
@@ -20,6 +20,6 @@ Another small correction: .NET 10 generated a `.slnx` solution file instead of a
 ## Code Written Deliberately
 
 - The `Result` model and weather orchestration were kept small and explicit so failures are easy to explain during a walkthrough.
-- The date parser uses separate strategy classes rather than a single list of format strings to make the strategy pattern visible and testable.
+- The date parser now uses a single exact-format parser with `DateTime.TryParseExact` to keep parsing behavior compact and explicit.
 - The file repository writes through a temporary file before replacing the target JSON file to reduce the chance of partially written cache files.
 - The Angular dashboard was hand-shaped instead of leaving generated starter content, because the exercise evaluates UI clarity and loading/error behavior.

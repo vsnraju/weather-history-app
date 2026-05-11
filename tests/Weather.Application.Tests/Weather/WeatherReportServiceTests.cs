@@ -15,12 +15,7 @@ namespace Weather.Application.Tests.Weather;
 public sealed class WeatherReportServiceTests
 {
     private readonly Mock<IDateFileReader> _dateFileReader = new();
-    private readonly IDateParser _dateParser = new CompositeDateParser(
-    [
-        new SlashDateParsingStrategy(),
-        new LongMonthDateParsingStrategy(),
-        new AbbreviatedMonthDateParsingStrategy()
-    ]);
+    private readonly IDateParser _dateParser = new DateParser();
     private readonly Mock<IWeatherRepository> _weatherRepository = new();
     private readonly Mock<IWeatherApiClient> _weatherApiClient = new();
 
