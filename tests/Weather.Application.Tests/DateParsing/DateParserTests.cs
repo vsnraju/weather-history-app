@@ -31,6 +31,17 @@ public sealed class DateParserTests
     }
 
     [Fact]
+    public void Parse_ReturnsFailure_WhenInputDoesNotMatchSupportedExactFormats()
+    {
+        var parser = new DateParser();
+
+        var result = parser.Parse("2021-02-27");
+
+        result.IsFailure.Should().BeTrue();
+        result.FirstError.Code.Should().Be("Date.Invalid");
+    }
+
+    [Fact]
     public void Parse_ReturnsFailure_WhenDateIsEmpty()
     {
         var parser = new DateParser();

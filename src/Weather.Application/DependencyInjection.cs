@@ -9,10 +9,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddSingleton<IDateParsingStrategy, SlashDateParsingStrategy>();
-        services.AddSingleton<IDateParsingStrategy, LongMonthDateParsingStrategy>();
-        services.AddSingleton<IDateParsingStrategy, AbbreviatedMonthDateParsingStrategy>();
-        services.AddSingleton<IDateParser, CompositeDateParser>();
+        services.AddSingleton<IDateParser, DateParser>();
         services.AddScoped<IWeatherReportService, WeatherReportService>();
 
         return services;
