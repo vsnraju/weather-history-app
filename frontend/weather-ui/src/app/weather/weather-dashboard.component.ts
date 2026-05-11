@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, DestroyRef, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewChild, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,7 +35,7 @@ import { WeatherService } from './weather.service';
   templateUrl: './weather-dashboard.component.html',
   styleUrl: './weather-dashboard.component.scss'
 })
-export class WeatherDashboardComponent implements OnInit, AfterViewInit {
+export class WeatherDashboardComponent implements OnInit {
   private readonly weatherService = inject(WeatherService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -57,7 +57,11 @@ export class WeatherDashboardComponent implements OnInit, AfterViewInit {
   protected readonly loadedCount = computed(() => this.totalCount() - this.invalidCount());
 
   @ViewChild(MatSort)
-  private sort?: MatSort;
+  private set sort(sort: MatSort | undefined) {
+    if (sort) {
+      this.dataSource.sort = sort;
+    }
+  }
 
   ngOnInit(): void {
     this.dataSource.filterPredicate = (entry, filter) =>
@@ -96,12 +100,6 @@ export class WeatherDashboardComponent implements OnInit, AfterViewInit {
       });
 
     this.loadWeather();
-  }
-
-  ngAfterViewInit(): void {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
   }
 
   protected loadWeather(): void {
