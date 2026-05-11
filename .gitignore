@@ -1,0 +1,18 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# Runtime weather cache
+**/weather-data/
+
+# Angular
+**/node_modules/
+**/dist/
+.angular/
+
+# Logs and local tooling
+*.log
+.vs/
+.vscode/.ropeproject/
