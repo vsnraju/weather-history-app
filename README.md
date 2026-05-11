@@ -8,7 +8,7 @@ The app reads dates from `dates.txt`, safely parses multiple date formats, fetch
 
 ```text
 .
-|-- WeatherCodingExercise.slnx
+|-- WeatherAPI.slnx
 |-- src
 |   |-- Weather.Domain
 |   |   |-- Common
@@ -49,7 +49,7 @@ This solution follows Clean Architecture dependency rules:
 - `Weather.Domain` contains the core model and `Result` primitives. It has no dependency on infrastructure, ASP.NET Core, or Angular.
 - `Weather.Application` owns use-case orchestration, DTOs, date parsing, and interfaces for input, persistence, and external weather data.
 - `Weather.Infrastructure` implements file reading, JSON file persistence, and the typed Open-Meteo `HttpClient` with Polly retries.
-- `Weather.Api` wires dependency injection, Serilog, CORS, OpenAPI, and the thin `WeatherController`.
+- `Weather.Api` wires dependency injection, Serilog, CORS, lower-environment Swagger, and the thin `WeatherController`.
 - `frontend/weather-ui` is a separate Angular 21 standalone app that calls the API through a typed Angular service.
 
 Business validation uses `Result<T>` instead of throwing exceptions. Infrastructure still catches IO, HTTP, timeout, and JSON exceptions at boundaries and converts them into explicit failure results.
@@ -104,14 +104,14 @@ Requirements:
 - .NET SDK 10
 
 ```powershell
-dotnet restore WeatherCodingExercise.slnx
-dotnet run --project src/Weather.Api/Weather.Api.csproj --launch-profile http
+dotnet restore WeatherAPI.slnx
+dotnet run --project src/Weather.Api/Weather.Api.csproj --launch-profile https
 ```
 
 Backend URL:
 
 ```text
-http://localhost:5012/api/weather
+https://localhost:7268/api/weather
 ```
 
 ## Run The Angular UI
@@ -133,14 +133,14 @@ UI URL:
 http://localhost:4200
 ```
 
-The Angular dev server proxies `/api` to `http://localhost:5012`.
+The Angular dev server proxies `/api` to `https://localhost:7268`.
 
 ## Tests
 
 Backend:
 
 ```powershell
-dotnet test WeatherCodingExercise.slnx
+dotnet test WeatherAPI.slnx
 ```
 
 Frontend:

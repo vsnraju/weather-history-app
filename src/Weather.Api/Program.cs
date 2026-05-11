@@ -9,6 +9,7 @@ Log.Logger = new LoggerConfiguration()
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    var enableSwagger = !builder.Environment.IsProduction();
 
     builder.Host.UseSerilog((context, services, loggerConfiguration) =>
     {
@@ -20,7 +21,12 @@ try
     });
 
     builder.Services.AddControllers();
-    builder.Services.AddOpenApi();
+    if (enableSwagger)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+    }
+
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddCors(options =>
@@ -36,13 +42,18 @@ try
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.MapOpenApi();
-    }
-
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
+
+    if (enableSwagger)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Weather API v1");
+        });
+    }
+
     app.UseCors("AngularDev");
     app.UseAuthorization();
     app.MapControllers();
